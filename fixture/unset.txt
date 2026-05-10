@@ -1,0 +1,2 @@
+# Ensure snapshot tests are not affected by colored Cargo output.
+CARGO_TERM_COLOR
