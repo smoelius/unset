@@ -1,0 +1,11 @@
+[package]
+name = "unset"
+version = "0.1.0"
+authors = ["Samuel Moelius <sam@moeli.us>"]
+description = "Unset environment variables before running Rust tests"
+edition = "2024"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/smoelius/unset"
+
+[dev-dependencies]
+assert_cmd = "2.2"
