@@ -1,6 +1,6 @@
 [package]
 name = "unset"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Samuel Moelius <sam@moeli.us>"]
 description = "Unset environment variables before running Rust tests"
 edition = "2024"
