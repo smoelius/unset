@@ -48,7 +48,9 @@ fn main() -> Result<(), Error> {
 }
 
 fn find_unset_txt() -> Result<PathBuf, Error> {
-    let mut candidate = Some(current_dir()?);
+    let current_directory = current_dir()?;
+
+    let mut candidate = Some(current_directory);
 
     while let Some(directory) = candidate {
         let path = directory.join("unset.txt");
