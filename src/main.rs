@@ -1,7 +1,8 @@
 use std::{
-    env::args_os,
+    env::{args_os, current_dir},
     fs::read_to_string,
     io::{Error, ErrorKind},
+    path::PathBuf,
     process::{Command, exit},
 };
 
@@ -12,7 +13,9 @@ fn main() -> Result<(), Error> {
         return Ok(());
     }
 
-    let variables = read_to_string("unset.txt")?
+    let path = find_unset_txt()?;
+
+    let variables = read_to_string(path)?
         .lines()
         .map(str::trim)
         .filter(|line| !line.is_empty() && !line.starts_with('#'))
@@ -42,4 +45,23 @@ fn main() -> Result<(), Error> {
     }
 
     exit(1);
+}
+
+fn find_unset_txt() -> Result<PathBuf, Error> {
+    let mut candidate = Some(current_dir()?);
+
+    while let Some(directory) = candidate {
+        let path = directory.join("unset.txt");
+
+        if path.is_file() {
+            return Ok(path);
+        }
+
+        candidate = directory.parent().map(PathBuf::from);
+    }
+
+    Err(Error::new(
+        ErrorKind::NotFound,
+        "could not find unset.txt in the current directory or any parent directory",
+    ))
 }
