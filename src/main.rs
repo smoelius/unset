@@ -14,22 +14,8 @@ fn main() -> Result<(), Error> {
     }
 
     let path = find_unset_txt()?;
-
-    let variables = read_to_string(path)?
-        .lines()
-        .map(str::trim)
-        .filter(|line| !line.is_empty() && !line.starts_with('#'))
-        .map(str::to_owned)
-        .collect::<Vec<_>>();
-
-    for variable in &variables {
-        if variable.contains('=') || variable.contains('\0') {
-            return Err(Error::new(
-                ErrorKind::InvalidData,
-                format!("invalid environment variable name in unset.txt: {variable}"),
-            ));
-        }
-    }
+    let contents = read_to_string(path)?;
+    let variables = parse_unset_txt(&contents)?;
 
     let mut command = Command::new(&args[1]);
     command.args(&args[2..]);
@@ -66,4 +52,24 @@ fn find_unset_txt() -> Result<PathBuf, Error> {
         ErrorKind::NotFound,
         "could not find unset.txt in the current directory or any parent directory",
     ))
+}
+
+fn parse_unset_txt(contents: &str) -> Result<Vec<String>, Error> {
+    let variables = contents
+        .lines()
+        .map(str::trim)
+        .filter(|line| !line.is_empty() && !line.starts_with('#'))
+        .map(str::to_owned)
+        .collect::<Vec<_>>();
+
+    for variable in &variables {
+        if variable.contains('=') || variable.contains('\0') {
+            return Err(Error::new(
+                ErrorKind::InvalidData,
+                format!("invalid environment variable name in unset.txt: {variable}"),
+            ));
+        }
+    }
+
+    Ok(variables)
 }
