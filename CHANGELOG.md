@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.2.2
+
+- Extract function to parse unset.txt ([#6](https://github.com/smoelius/unset/pull/6))
+
 ## 0.2.1
 
 - Eliminate nested question mark ([#4](https://github.com/smoelius/unset/pull/4))
