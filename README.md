@@ -1,3 +1,22 @@
+**Archived**
+
+This project was ill-conceived.
+
+For many cases, what it does could be achieved with the following:
+
+```yaml
+- run: |
+    unset CARGO_TERM_COLOR
+    cargo test
+```
+
+If one really wants the outer `cargo` invocations to be colored and just not the ones invoked by the tests, then one can do this:
+
+```yaml
+- run: |
+    cargo test --config "target.'cfg(all())'.runner = 'env -u CARGO_TERM_COLOR'"
+```
+
 # unset
 
 A [Rust test runner] that unsets environment variables before running a test executable.
